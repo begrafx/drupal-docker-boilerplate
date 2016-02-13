@@ -10,11 +10,13 @@ Boilerplate to start Drupal 8 Projects
 
 ## Instalation
 
-Clone this project and inside download drupal inside a public_html folder, after that type the make command inside a root folder:
+Clone this project and download drupal inside a public_html folder, after that type the make command inside a root folder:
 
 ```shell
 $ make
 ```
+
+Assure that you have drupal.dev host in or host file pointing to a docker instance, in or browser access http://drupal.dev/ or the IP of docker machine. 
 
 ## Commands
 
