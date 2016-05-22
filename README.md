@@ -1,4 +1,4 @@
-# D8 Development Environment
+# Drupal Development Environment
 
 Boilerplate to start Drupal 7/8 Projects (Under Development)
 
@@ -44,6 +44,7 @@ In order to make more easy, we create some commands inside a Make file
 
 - Add container for volumes 
 - Add variables for specify a folder
+- Add support to d7 environments
 - Add and test front container tools
 - Add monitor system
 
