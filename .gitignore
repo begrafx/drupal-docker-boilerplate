@@ -22,4 +22,4 @@ vendor
 bin
 infrastructure/environments/*/*/.vagrant
 infrastructure/environments/*/docker/docker-compose.*.yml
-resources/*.jar
+.env

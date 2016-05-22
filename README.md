@@ -1,12 +1,12 @@
 # D8 Development Environment
 
-Boilerplate to start Drupal 8 Projects
+Boilerplate to start Drupal 7/8 Projects (Under Development)
 
 ## Requirements
 
 - make command
-- Docker 1.8+
-- Docker Composer
+- Docker 1.11+
+- Docker Composer 1.7+
 
 ## Instalation
 
