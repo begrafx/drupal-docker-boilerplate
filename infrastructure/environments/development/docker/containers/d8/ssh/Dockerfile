@@ -6,9 +6,9 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin && ln -s /usr/bin/composer.phar /usr/bin/composer
 
-RUN composer.phar global require drush/drush:7.1.0
+RUN curl -O http://files.drush.org/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush && drush init -y
 
-RUN ln -s /root/.composer/vendor/bin/drush /usr/bin/drush
+RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal && drupal init --override
 
 RUN composer.phar global require drupal/drupal-extension:~3.0
 RUN ln -s /root/.composer/vendor/bin/behat /usr/bin/behat
@@ -21,8 +21,6 @@ RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/ss
 
 RUN mkdir /var/run/sshd
 RUN chmod 0755 /var/run/sshd
-
-RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal && drupal init --override
 
 EXPOSE 22
 WORKDIR /var/www/public_html

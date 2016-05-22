@@ -29,7 +29,10 @@ reinstall_drupal: requirements
 	@export $$(cat .env | xargs) && chmod -Rf 777 public_html/sites/default/ && rm public_html/sites/default/settings.php && cp public_html/sites/default/default.settings.php public_html/sites/default/settings.php
 
 install_drupal: requirements
-	@export $$(cat .env | xargs) && docker exec -it $${DRUPAL_BOILERPLATE_PROJECT_NAME} /usr/local/bin/drush si --account-name=admin --account-pass=admin --db-url=mysql://drupal:drupal@mysql/drupal -y 2>/dev/null
+	@chmod -R 777 public_html/sites/default && (test -d public_html/sites/default/files || mkdir public_html/sites/default/files) && chmod -R 777 public_html/sites/default/files
+	@chmod -R 777 public_html/sites/default/ && cp public_html/sites/default/default.settings.php public_html/sites/default/settings.php && chmod -R 777 public_html/sites/default/settings.php
+	@export $$(cat .env | xargs) && docker exec -it $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_${CONTAINER} /bin/bash -c 'drush si --account-name=admin --account-pass=admin --db-url=mysql://drupal:drupal@mysql/drupal -y 2>/dev/null'
+	@chmod -R 755 public_html/sites/default/settings.php
 
 ssh: requirements
 	@export $$(cat .env | xargs) && docker exec -it $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_${CONTAINER} bash

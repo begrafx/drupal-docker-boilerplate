@@ -1,9 +1,11 @@
-FROM node:0-wheezy
+FROM node:4-wheezy
 
 RUN npm install -g phantomcss
 RUN npm install -g bower
 RUN npm install -g casperjs
 RUN npm install -g gulp-cli
+RUN npm install -g webpack
+RUN npm install -g less
 
 # skip installing gem documentation
 RUN mkdir -p /usr/local/etc \
