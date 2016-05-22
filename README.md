@@ -44,7 +44,6 @@ In order to make more easy, we create some commands inside a Make file
 
 - Add container for volumes 
 - Add variables for specify a folder
-- Add support to d7 environments
 - Add and test front container tools
 - Add monitor system
 
