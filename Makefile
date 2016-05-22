@@ -1,5 +1,7 @@
 SHELL:=/bin/bash
-DRUPAL_BOILERPLATE_VERSION?=0.0.2
+D7_VERSION?=7.43
+D8_VERSION?=8.1.1
+DRUPAL_BOILERPLATE_VERSION?=0.2
 HOST?=drupal.dev
 PROJECT_NAME?=drupal_boilerplate
 DRUPAL_VERSION?=8
@@ -9,19 +11,19 @@ CONTAINER?=ssh
 all: server_up
 
 server_up: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/dockerv2 && docker-compose up -d
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml up -d
 
 server_halt: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/dockerv2 && docker-compose stop
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop
 
 server_start: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/dockerv2 && docker-compose start
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
 
 server_reload: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/dockerv2 && docker-compose stop && docker-compose start
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
 
 server_destroy: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/dockerv2 && docker-compose stop && docker-compose rm -f
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml rm
 
 reinstall_drupal: requirements
 	@export $$(cat .env | xargs) && chmod -Rf 777 public_html/sites/default/ && rm public_html/sites/default/settings.php && cp public_html/sites/default/default.settings.php public_html/sites/default/settings.php
@@ -38,9 +40,10 @@ sleep:
 destroy: server_destroy
 
 clean: destroy
-	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/php:$${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}
-	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/ssh:$${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}
-	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/fronttools:$${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}
+	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/php:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true
+	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/ssh:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true 
+	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/fronttools:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true
+	@export $$(cat .env | xargs) && docker volume rm $(docker volume ls -qf dangling=true)
 	@rm -Rf .env
 
 
@@ -54,6 +57,12 @@ set_variable:
 	@echo "DRUPAL_BOILERPLATE_HOST=${HOST}" >> .env
 	@echo "DRUPAL_BOILERPLATE_DRUPAL_VERSION=${DRUPAL_VERSION}" >> .env
 	@echo "DRUPAL_BOILERPLATE_VERSION=${DRUPAL_BOILERPLATE_VERSION}" >> .env
+	@(test ${DRUPAL_VERSION} -eq 7 && echo "DRUPAL_BOILERPLATE_DOWNLOAD_VERSION=7.43" >> .env) || true
+	@(test ${DRUPAL_VERSION} -eq 8 && echo "DRUPAL_BOILERPLATE_DOWNLOAD_VERSION=8.1.1" >> .env) || true
+
+download:
+	@read -p "Do you wish download Drupal? You will lost everything inside a public directory [y/n] : " yn && test $$yn == 'y' && exit 0
+	@export $$(cat .env | xargs) && rm -Rf public_html/* && curl https://ftp.drupal.org/files/projects/drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}.tar.gz | tar zx && cp -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}/* public_html/ && rm -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}
 
 help:
 	@echo "make server_up 			-> Up and provisione docker container."
