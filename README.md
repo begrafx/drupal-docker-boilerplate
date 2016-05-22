@@ -40,6 +40,13 @@ In order to make more easy, we create some commands inside a Make file
 | make test_help 			| List commands that doesn't have documentation yet.|
 | make destroy 				| Destroy containers and rewrite settings.php.		|
 
+## Todo
+
+- Add container for volumes 
+- Add variables for specify a folder
+- Add and test front container tools
+- Add monitor system
+
 
 Licence
 -------
