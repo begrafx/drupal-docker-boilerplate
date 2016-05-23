@@ -1,0 +1,72 @@
+version: '2'
+
+networks:
+  front:
+    driver: bridge
+
+services:
+  nginx:
+    restart: always
+    container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_nginx"
+    image: nginx:latest
+    hostname: "www.${DRUPAL_BOILERPLATE_HOST}"
+    ports:
+     - "80:80"
+    networks:
+      front:
+        aliases:
+          - "www.${DRUPAL_BOILERPLATE_HOST}"
+    volumes:
+     - ../../../../public_html:/var/www/public_html
+     - ./containers/d7/nginx/conf/sites.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+     - php
+  php:
+    restart: always
+    privileged: true
+    image: "drupal-boilerplate/php:7.${DRUPAL_BOILERPLATE_VERSION}"
+    build: containers/d7/php
+    container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_php"
+    hostname: "php.${DRUPAL_BOILERPLATE_HOST}"
+    networks:
+     - front
+    volumes:
+     - ../../../../public_html:/var/www/public_html
+  ssh:
+    restart: always
+    privileged: true
+    image: "drupal-boilerplate/ssh:7.${DRUPAL_BOILERPLATE_VERSION}"
+    build: containers/d7/ssh
+    container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_ssh"
+    hostname: "ssh.${DRUPAL_BOILERPLATE_HOST}"
+    networks:
+     - front
+    ports:
+     - "22222:22"
+    volumes:
+     - ../../../../public_html:/var/www/public_html
+    depends_on:
+     - php
+  mysql:
+    restart: always
+    image: mysql:5.6
+    container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_mysql"
+    hostname: "db.${DRUPAL_BOILERPLATE_HOST}"
+    ports:
+     - "3306:3306"
+    networks:
+     - front
+    environment:
+     - MYSQL_ROOT_PASSWORD=root
+     - MYSQL_DATABASE=drupal
+     - MYSQL_USER=drupal
+     - MYSQL_PASSWORD=drupal
+    volumes:
+     - "/opt/mysql/56/${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}:/var/lib/mysql"
+     - ./containers/mysql/conf:/etc/mysql/conf.d
+  fronttools:
+    image: "drupal-boilerplate/fronttools:7.${DRUPAL_BOILERPLATE_VERSION}"
+    build: containers/d7/fronttools
+    container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_fronttools"
+    volumes:
+     - ../../../../public_html:/var/www/public_html
