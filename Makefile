@@ -67,6 +67,13 @@ download:
 	@read -p "Do you wish download Drupal? You will lost everything inside a public directory [y/n] : " yn && test $$yn == 'y' && exit 0
 	@export $$(cat .env | xargs) && rm -Rf public_html/* && curl https://ftp.drupal.org/files/projects/drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}.tar.gz | tar zx && cp -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}/* public_html/ && rm -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}
 
+test_server_up:
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.test.yml up -d
+	@sleep 3
+
+test_server_destroy:
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.test.yml kill	&& docker-compose -f docker-compose.test.yml rm -f
+
 help:
 	@echo "make server_up 			-> Up and provisione docker container."
 	@echo "make server_destroy 		-> Destroy docker container."

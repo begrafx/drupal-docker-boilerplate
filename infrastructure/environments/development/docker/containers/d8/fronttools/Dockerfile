@@ -64,3 +64,7 @@ RUN gem install compass
 RUN gem install sass-globbing gridle scss-lint
 
 WORKDIR /var/www
+
+ADD conf/loop.sh /usr/bin/loop.sh
+RUN chmod +x /usr/bin/loop.sh
+CMD ["/usr/bin/loop.sh"]

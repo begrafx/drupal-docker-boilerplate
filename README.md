@@ -46,6 +46,7 @@ In order to make more easy, we create some commands inside a Make file
 - Add variables for specify a folder
 - Add and test front container tools
 - Add monitor system
+- Add vnc support for linux
 
 
 Licence
