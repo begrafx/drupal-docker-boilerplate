@@ -1,9 +1,9 @@
 SHELL:=/bin/bash
 D7_VERSION?=7.43
 D8_VERSION?=8.1.1
-DRUPAL_BOILERPLATE_HTTP_PORT?=80
-DRUPAL_BOILERPLATE_MYSQL_PORT?=3306
-DRUPAL_BOILERPLATE_SSH_PORT?=22
+DRUPAL_BOILERPLATE_HTTP_PORT?=8080
+DRUPAL_BOILERPLATE_MYSQL_PORT?=33060
+DRUPAL_BOILERPLATE_SSH_PORT?=22000
 DRUPAL_BOILERPLATE_FOLDER?=../../../../public_html
 DRUPAL_BOILERPLATE_VERSION?=0.2
 HOST?=drupal.dev
@@ -50,7 +50,7 @@ clean: destroy
 	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/php:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true
 	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/ssh:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true 
 	@export $$(cat .env | xargs) && docker rmi drupal-boilerplate/fronttools:$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.$${DRUPAL_BOILERPLATE_VERSION} || true
-	@export $$(cat .env | xargs) && docker volume rm $(docker volume ls -qf dangling=true)
+	@export $$(cat .env | xargs) && docker volume rm $(docker volume ls -qf dangling=true) || TRUE
 	@rm -Rf .env
 
 
@@ -73,7 +73,7 @@ set_variable:
 
 download:
 	@read -p "Do you wish download Drupal? You will lost everything inside a public directory [y/n] : " yn && test $$yn == 'y' && exit 0
-	@export $$(cat .env | xargs) && rm -Rf public_html/* && curl https://ftp.drupal.org/files/projects/drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}.tar.gz | tar zx && cp -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}/* public_html/ && rm -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && rm -Rf ${DRUPAL_BOILERPLATE_FOLDER}/* && curl https://ftp.drupal.org/files/projects/drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}.tar.gz | tar zx && cp -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}/* ${DRUPAL_BOILERPLATE_FOLDER}/ && rm -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}
 
 test_server_up:
 	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.test.yml up -d
