@@ -2,6 +2,8 @@
 
 Boilerplate to start Drupal 7/8 Projects (Under Development)
 
+[![wercker status](https://app.wercker.com/status/fdd493963b80d565cec81686ccd4e019/m "wercker status")](https://app.wercker.com/project/bykey/fdd493963b80d565cec81686ccd4e019)
+
 ## Requirements
 
 - make command
