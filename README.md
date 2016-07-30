@@ -1,4 +1,4 @@
-# Drupal Development Environment
+# Drupal Development Environment [![Build Status](https://travis-ci.org/seregatte/drupal-docker-boilerplate.svg?branch=master)](https://travis-ci.org/seregatte/drupal-docker-boilerplate)
 
 Boilerplate to start Drupal 7/8 Projects (Under Development)
 
