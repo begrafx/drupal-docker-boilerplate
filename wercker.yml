@@ -20,7 +20,7 @@ build:
     # Read more about steps on our dev center:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
-    - internal/shell:
+    - script:
         name: Run Docker
         code: |
           docker run hello-world
