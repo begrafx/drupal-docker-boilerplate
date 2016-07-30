@@ -1,5 +1,5 @@
 SHELL:=/bin/bash
-D7_VERSION?=7.43
+D7_VERSION?=7.50
 D8_VERSION?=8.1.1
 DRUPAL_BOILERPLATE_HTTP_PORT?=8080
 DRUPAL_BOILERPLATE_MYSQL_PORT?=33060
@@ -16,19 +16,25 @@ CONTAINER?=ssh
 all: server_up
 
 server_up: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml up -d
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml up -d
 
 server_halt: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop
 
 server_start: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
 
 server_reload: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml start
+
+container_log: requirements
+	@export $$(cat .env | xargs) && docker logs $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_${CONTAINER}
+
+container_restart: requirements
+	@export $$(cat .env | xargs) && docker restart $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_${CONTAINER}
 
 server_destroy: requirements
-	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml rm
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $$DRUPAL_BOILERPLATE_PROJECT_NAME -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml rm
 
 reinstall_drupal: requirements
 	@export $$(cat .env | xargs) && chmod -Rf 777 public_html/sites/default/ && rm public_html/sites/default/settings.php && cp public_html/sites/default/default.settings.php public_html/sites/default/settings.php

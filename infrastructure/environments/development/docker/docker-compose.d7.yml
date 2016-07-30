@@ -21,6 +21,8 @@ services:
      - ./containers/d7/nginx/conf/sites.conf:/etc/nginx/conf.d/default.conf
     depends_on:
      - php
+    env_file:
+     - "${DRUPAL_BOILERPLATE_ENV_FILE}"
   php:
     restart: always
     privileged: true
@@ -32,6 +34,9 @@ services:
      - front
     volumes:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
+     - "./containers/d7/conf/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    env_file:
+     - "${DRUPAL_BOILERPLATE_ENV_FILE}"
   ssh:
     restart: always
     privileged: true
@@ -45,8 +50,11 @@ services:
      - "${DRUPAL_BOILERPLATE_SSH_PORT}:22"
     volumes:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
+     - "./containers/d7/conf/php.ini:/usr/local/etc/php/conf.d/php.ini"
     depends_on:
      - php
+    env_file:
+     - "${DRUPAL_BOILERPLATE_ENV_FILE}"
   mysql:
     restart: always
     image: mysql:5.6
@@ -70,3 +78,5 @@ services:
     container_name: "${DRUPAL_BOILERPLATE_PROJECT_NAME}_${DRUPAL_BOILERPLATE_DRUPAL_VERSION}_fronttools"
     volumes:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
+    env_file:
+     - "${DRUPAL_BOILERPLATE_ENV_FILE}"
