@@ -16,5 +16,5 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - docker version
-  - make
+  - make travis DRUPAL_VERSION=7
+  - make travis DRUPAL_VERSION=8
