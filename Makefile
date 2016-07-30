@@ -71,6 +71,18 @@ set_variable:
 	@(test ${DRUPAL_VERSION} -eq 7 && echo "DRUPAL_BOILERPLATE_DOWNLOAD_VERSION=7.43" >> .env) || true
 	@(test ${DRUPAL_VERSION} -eq 8 && echo "DRUPAL_BOILERPLATE_DOWNLOAD_VERSION=8.1.1" >> .env) || true
 
+get_variable:
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_PROJECT_NAME="$$DRUPAL_BOILERPLATE_PROJECT_NAME
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_HOST="$$DRUPAL_BOILERPLATE_HOST
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_DRUPAL_VERSION="$$DRUPAL_BOILERPLATE_DRUPAL_VERSION
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_VERSION="$$DRUPAL_BOILERPLATE_VERSION
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_FOLDER="$$DRUPAL_BOILERPLATE_FOLDER
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_HTTP_PORT="$$DRUPAL_BOILERPLATE_HTTP_PORT
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_MYSQL_PORT="$$DRUPAL_BOILERPLATE_MYSQL_PORT
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_SSH_PORT="$$DRUPAL_BOILERPLATE_SSH_PORT
+	@export $$(cat .env | xargs) && echo "DRUPAL_BOILERPLATE_DOWNLOAD_VERSION="$$DRUPAL_BOILERPLATE_DOWNLOAD_VERSION
+
+
 download:
 	@read -p "Do you wish download Drupal? You will lost everything inside a public directory [y/n] : " yn && test $$yn == 'y' && exit 0
 	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && rm -Rf ${DRUPAL_BOILERPLATE_FOLDER}/* && curl https://ftp.drupal.org/files/projects/drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}.tar.gz | tar zx && cp -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}/* ${DRUPAL_BOILERPLATE_FOLDER}/ && rm -Rf drupal-$${DRUPAL_BOILERPLATE_DOWNLOAD_VERSION}
