@@ -32,6 +32,7 @@ services:
      - front
     volumes:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
+     - "./containers/d8/conf/php.ini:/usr/local/etc/php/conf.d/php.ini"
   ssh:
     restart: always
     privileged: true
@@ -45,6 +46,7 @@ services:
      - "${DRUPAL_BOILERPLATE_SSH_PORT}:22"
     volumes:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
+     - "./containers/d8/conf/php.ini:/usr/local/etc/php/conf.d/php.ini"
     depends_on:
      - php
   mysql:
