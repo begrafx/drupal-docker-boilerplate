@@ -15,4 +15,5 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
+  - ls -la
   - docker run hello-world
