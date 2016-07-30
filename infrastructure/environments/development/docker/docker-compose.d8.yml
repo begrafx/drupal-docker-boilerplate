@@ -47,6 +47,8 @@ services:
      - "${DRUPAL_BOILERPLATE_FOLDER}:/var/www/public_html"
     depends_on:
      - php
+    env_file:
+     - "${DRUPAL_BOILERPLATE_ENV_FILE}"
   mysql:
     restart: always
     image: mysql:latest
