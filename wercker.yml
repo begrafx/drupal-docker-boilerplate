@@ -21,13 +21,17 @@ build:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
     - script:
-        name: Run Docker
+        name: echo
         code: |
-          docker run hello-world
+          echo "hello world!"
+    - internal/shell:
+      cmd: /bin/bash
+      code: |
+        docker run hello-world
 
 dev:
   steps:
     - internal/shell:
-        name: Run Docker
-        code: |
-          docker run hello-world
+      cmd: /bin/bash
+      code: |
+        docker run hello-world
