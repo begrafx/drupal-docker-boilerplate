@@ -2,7 +2,7 @@
 # Docker Hub https://registry.hub.docker.com/_/debian/
 # Read more about containers on our dev center
 # http://devcenter.wercker.com/docs/containers/index.html
-box: wercker-labs/docker
+box: debian
 # You can also use services such as databases. Read more on our dev center:
 # http://devcenter.wercker.com/docs/services/index.html
 # services:
@@ -20,14 +20,14 @@ build:
     # Read more about steps on our dev center:
     # http://devcenter.wercker.com/docs/steps/index.html
   steps:
-    - script:
-        name: echo
+    - internal/shell:
+        name: Run Docker
         code: |
-          echo "hello world!"
+          docker run hello-world
 
 dev:
   steps:
-    - script:
+    - internal/shell:
         name: Run Docker
         code: |
           docker run hello-world
