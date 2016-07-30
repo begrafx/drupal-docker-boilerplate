@@ -110,3 +110,5 @@ help:
 test_help:
 	@join -v 1 <(cat Makefile | grep ^[a-z][^\w]*: | cut -f1 -d":" | sort) <(make help | cut -f2 -d" " | sort)
 
+travis: set_variable all
+	@export $$(cat .env | xargs) && cd infrastructure/environments/${ENVIRONMENT}/docker && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml stop && docker-compose --project-name $${DRUPAL_BOILERPLATE_PROJECT_NAME}_$${DRUPAL_BOILERPLATE_DRUPAL_VERSION} -f docker-compose.d$${DRUPAL_BOILERPLATE_DRUPAL_VERSION}.yml rm -f
