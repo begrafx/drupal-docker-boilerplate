@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
     && rm -r /var/lib/apt/lists/* \
-    && pecl install memcached \
+    && pecl install memcached-2.2.0 \
     && docker-php-ext-install -j$(nproc) mbstring \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
     && docker-php-ext-install -j$(nproc) zip \
