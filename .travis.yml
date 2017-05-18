@@ -9,7 +9,7 @@ env:
   DOCKER_COMPOSE_VERSION: 1.7.1
 
 before_install:
-  - "sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' update && sudo rm -r /usr/lib/jvm/java-8-oracle/jdk1.* && apt-get install -f && apt-get purge oracle-java8-installer && apt-get install oracle-java8-installer"
+  - "sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' update && sudo rm -r /usr/lib/jvm/java-8-oracle/jdk1.* && apt-get install -f && apt-get purge oracle-java8-installer && apt-get install oracle-java8-installer && apt-get install oracle-java8-set-default"
   - "sudo apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' upgrade docker-engine && sudo service docker restart"
   - sudo rm /usr/local/bin/docker-compose
   - "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose"
