@@ -1,53 +1,32 @@
 # Drupal Development Environment [![Build Status](https://travis-ci.org/seregatte/drupal-docker-boilerplate.svg?branch=master)](https://travis-ci.org/seregatte/drupal-docker-boilerplate)
 
-Boilerplate to start Drupal 7/8 Projects (Under Development)
+Boilerplate to start Drupal 8 Projects based on docksal
 
 ## Requirements
 
-- make command
-- Docker 1.11+
-- Docker Composer 1.7+
+- Docksal
 
 ## Instalation
 
-Clone this project and download drupal inside a public_html folder, after that type the make command inside a root folder:
+Clone this project and download drupal inside a docroot folder, after that type the fin command inside a root folder:
 
 ```shell
-$ make
+$ fin up
 ```
 
-Assure that you have drupal.dev host in or host file pointing to a docker instance, in or browser access http://drupal.dev/ or the IP of docker machine. 
+or you can create the project via composer.
 
-## Commands
+If you have a php cli stack and composer, try this:
 
-In order to make more easy, we create some commands inside a Make file
+```
+composer create-project seregatte/drupal-composer-boilerplate some-dir --stability dev --no-interaction
+```
 
-### Examples
+or if you prefer run via docker:
 
-| Command 					| Description 										|
-|---------------------------|---------------------------------------------------|
-| make 		 				| Provision container and install drupal.			|
-| make server_up 			| Up and provisione docker container.				|
-| make server_destroy 		| Destroy docker container.							|
-| make server_halt 			| Halt docker container.							|
-| make server_start 		| Start container already provisioned.				|
-| make server_reload 		| Halt and start container already provisioned.		|
-| make destroy_install_all	| Rebuild system an run again.						|
-| make reinstall_drupal		| Rewrite settings.php on default folder.			|
-| make install_drupal		| Run process to install drupal on container.		|
-| make ssh					| Enable us to run commands inside a container.		|
-| make help 				| Show that message list.							|
-| make test_help 			| List commands that doesn't have documentation yet.|
-| make destroy 				| Destroy containers and rewrite settings.php.		|
-
-## Todo
-
-- Add container for volumes 
-- Add variables for specify a folder
-- Add and test front container tools
-- Add monitor system
-- Add vnc support for linux
-
+```
+docker run --rm -v $(pwd):/app composer/composer create-project seregatte/drupal-composer-boilerplate some-dir --stability dev --no-interaction
+```
 
 Licence
 -------
