@@ -45,7 +45,8 @@ copy_settings_file()
 init_settings ()
 {
 	# Copy from settings templates
-	copy_settings_file "${SITEDIR_PATH}/default.settings.local.php" "${SITEDIR_PATH}/settings.local.php"
+	rm -Rf ${SITEDIR_PATH}/settings.php
+	copy_settings_file "${SITEDIR_PATH}/default.settings.php" "${SITEDIR_PATH}/settings.php"
 }
 
 # Fix file/folder permissions
@@ -61,7 +62,20 @@ site_install ()
 	cd $DOCROOT_PATH
 
 	# We disable email sending here so site-install does not return an error
-	PHP_OPTIONS="-d sendmail_path=`which true`" drush site-install -y --site-name='My Drupal 8 Site'
+	PHP_OPTIONS="-d sendmail_path=`which true`" drupal site:install standard \
+			--langcode="en"  \
+			--db-type="mysql"  \
+			--db-host="db"  \
+			--db-name="default" \
+			--db-user="root"  \
+			--db-pass="root"  \
+			--db-port="3306"  \
+			--site-name="Drupal 8"  \
+			--site-mail="admin@example.com"  \
+			--account-name="admin"  \
+			--account-mail="admin@example.com"  \
+			--account-pass="admin" \
+			--force
 }
 
 #-------------------------- END: Functions --------------------------------
