@@ -11,7 +11,7 @@ install:
   - fin sysinfo
 
 before_script:
-  - fin init
+  - fin up
 
 script:
   - fin test
