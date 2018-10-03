@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-#: exec_target = cli
-
 ## Set a VIRTUAL_HOST variable
 ##
 ## Usage: fin setdomain drupal.docksal
 
 DOMAIN=$1
 
-sed -i "s|VIRTUAL_HOST=.*|VIRTUAL_HOST=${DOMAIN}|g" .docksal/docksal.env || sed -i '' "s|VIRTUAL_HOST=.*|VIRTUAL_HOST=${DOMAIN}|g" .docksal/docksal.env
+sed -i '' "s|VIRTUAL_HOST=.*|VIRTUAL_HOST=${DOMAIN}|g" .docksal/docksal.env || sed -i "s|VIRTUAL_HOST=.*|VIRTUAL_HOST=${DOMAIN}|g" .docksal/docksal.env
